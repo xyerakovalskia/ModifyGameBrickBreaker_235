@@ -179,3 +179,26 @@ class Paddle(GameObject):
         super(Paddle, self).move(offset, 0)
         if self.ball is not None:
             self.ball.move(offset, 0)
+
+
+class Brick(GameObject):
+    DAMAGED = '#ecf0f1'
+
+    def __init__(self, canvas, x, y, hits, color):
+        self.width = BRICK_W
+        self.height = BRICK_H
+        self.hits = hits
+        item = canvas.create_rectangle(x - self.width / 2,
+                                       y - self.height / 2,
+                                       x + self.width / 2,
+                                       y + self.height / 2,
+                                       fill=color, outline='#222222',
+                                       tags='brick')
+        super(Brick, self).__init__(canvas, item)
+
+    def hit(self):
+        self.hits -= 1
+        if self.hits <= 0:
+            self.delete()
+        else:
+            self.canvas.itemconfig(self.item, fill=Brick.DAMAGED)
